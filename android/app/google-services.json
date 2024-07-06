@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "126364852802",
+    "project_id": "hackathon-89524",
+    "storage_bucket": "hackathon-89524.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126364852802:android:530938169fbfbd31df83db",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuarmf99YgBCW7JIyYmU1grBCC6DlaAeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126364852802:android:6aa26fb96fb64969df83db",
+        "android_client_info": {
+          "package_name": "com.example.iotapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuarmf99YgBCW7JIyYmU1grBCC6DlaAeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:iotapp/const/MyColors.dart';
-
-import 'TextWidget.dart';
+import 'package:iotapp/pages/gauge_data_controller.dart';
+import 'package:iotapp/widget/TextWidget.dart';
+import 'package:iotapp/widget/gaugeWidget.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class Circularprog extends StatelessWidget {
@@ -12,79 +15,85 @@ class Circularprog extends StatelessWidget {
       required this.v,
       required this.p,
       required this.t,
-      this.revers = false});
+      this.revers = false,
+      required this.page});
   double h, w, v;
   final String p, t;
   final bool revers;
+  final page;
   @override
   Widget build(BuildContext context) {
+    GaugeDataController c = GaugeDataController();
+    c.value = 20;
+    c.gaugeRadius = w * 0.5;
+    c.parentHeight = h;
+    c.parentWidth = w;
+    c.fontSize = w * 0.2;
+    c.pointerSize = w * 0.12;
+    c.degree = 240;
+    c.thickness = w * 0.1;
+    c.value = v;
+    c.spacing = w * 0.04;
+    c.segments = [
+      const GaugeSegment(from: 0, to: 25, color: Colors.green),
+      const GaugeSegment(from: 25, to: 50, color: Colors.yellow),
+      const GaugeSegment(from: 50, to: 75, color: Colors.orange),
+      const GaugeSegment(from: 75, to: 100, color: Colors.red)
+    ];
+    if (revers) {
+      c.segments = c.segments = [
+        const GaugeSegment(from: 0, to: 25, color: Colors.red),
+        const GaugeSegment(from: 25, to: 50, color: Colors.orange),
+        const GaugeSegment(from: 50, to: 75, color: Colors.yellow),
+        const GaugeSegment(from: 75, to: 100, color: Colors.green)
+      ];
+    }
     bool neg = false;
     if (v < 0) {
       neg = true;
       v = v * -1;
-      
+      c.value = v;
+      c.segments = c.segments = [
+        const GaugeSegment(from: 0, to: 25, color: Colors.blue),
+        const GaugeSegment(from: 25, to: 50, color: Colors.lightBlue),
+        const GaugeSegment(
+            from: 50, to: 75, color: Color.fromARGB(255, 0, 242, 255)),
+        const GaugeSegment(
+            from: 75, to: 100, color: Color.fromARGB(255, 172, 249, 255))
+      ];
     }
-    return Container(
-      padding: EdgeInsets.all(15),
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(15), color: c4),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              TextWidget(
-                text: p,
-                color: cw,
-                textSize: h / 4,
-                isTitle: true,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                height: h,
-                width: w,
-                child: RotationTransition(
-                  turns:const AlwaysStoppedAnimation(270 / 360),
-                  child: AnimatedBuilder(
-                    animation: Tween<double>(begin: 0, end: 1).animate(
-                      const AlwaysStoppedAnimation(100),
-                    ),
-                    builder: (context, child) {
-                      Color color;
-                      if (neg) {
-                         color =
-                            ColorTween(begin: Colors.blue, end: Colors.white)
-                                .lerp(v)!;
-                      } else {
-                         color = revers
-                            ? ColorTween(begin: Colors.green, end: Colors.red)
-                                .lerp(v)!
-                            : ColorTween(begin: Colors.red, end: Colors.green)
-                                .lerp(v)!;
-                      }
-
-                      return CircularProgressIndicator(
-                        strokeWidth: 20,
-                        backgroundColor: color.withOpacity(v / 2),
-                        valueColor: AlwaysStoppedAnimation(color),
-                        value: v,
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          TextWidget(
-            text: t,
-            color: cw,
-            textSize: 16,
-            isTitle: true,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        if (page != null) {
+          Navigator.push(
+            context,
+            PageTransition(type: PageTransitionType.fade, child: page),
+           
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: c1,
+            border: Border.all(
+              color: c5,
+            )),
+        child: Column(
+          children: [
+            Gaug(
+              controller: c,
+              text: neg ? "$p" : p,
+            ),
+            TextWidget(
+              text: t,
+              color: cb,
+              textSize: h * 0.15,
+              isTitle: true,
+            )
+          ],
+        ),
       ),
     );
   }

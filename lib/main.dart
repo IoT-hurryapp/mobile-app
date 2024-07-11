@@ -1,96 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:iotapp/API/authstuff.dart';
 import 'package:iotapp/API/checkLocations.dart';
-import 'package:iotapp/API/sokcetIO.dart';
 import 'package:iotapp/Screens/HomePage.dart';
-import 'package:iotapp/Screens/authScreen.dart';
 import 'package:iotapp/Screens/setLocations.dart';
+import 'package:iotapp/Screens/wPage.dart';
 import 'package:iotapp/provider/MainProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebasePushNotfications().initNotf();
 
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => MainProvider())],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isLooding = true;
+
+  bool isthereAsavedLocation = false;
+
+  Future log() async {
+    
+    await loginwithToken(context);
+    if (await Checklocations().isthereAsavedLocation()) {
+      setState(() {
+        isthereAsavedLocation = true;
+      });
+    }
+    setState(() {
+      isLooding = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    log();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
-    bool isLooding = true;
-    bool isthereAsavedLocation = false;
-    Future log() async {
-      SocketService().connect(context);
-      await loginwithToken(context);
-      if (await Checklocations().isthereAsavedLocation()) {
-        isthereAsavedLocation =true;
-      }
-      isLooding = false;
-    }
-
-    if (isLooding) {
-      log();
-    }
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'WApp',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+         
           useMaterial3: true,
         ),
-        home: Consumer<MainProvider>(
-          builder: (context, value, child) {
-            if (isLooding) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            if (value.isLog) {
-              if(isthereAsavedLocation){
-                return const HomePage();
-              }else{
-                return const Setlocations();
+        home: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Consumer<MainProvider>(
+            builder: (context, value, child) {
+              if (isLooding) {
+                return Scaffold(
+                  body: Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/imgs/backround.png"))),
+                  ),
+                );
               }
-              
-            } else {
-              return const AuthScreen();
-            }
-          },
+              if (value.isLog) {
+                if (isthereAsavedLocation) {
+                  return const HomePage();
+                } else {
+                  return const HomePage();
+
+                  return const Setlocations();
+                }
+              } else {
+                return const WPage();
+              }
+            },
+          ),
         ));
   }
-}
-
-
-class FirebasePushNotfications{
-
-
-  final _fbM = FirebaseMessaging.instance;
-
-  Future initNotf()async{
-
-    await _fbM.requestPermission();
-    final token = await _fbM.getToken();
-
-    //print("Token: $token");
-    print(token);
-    return token;
-  }
-
-
-
-
 }

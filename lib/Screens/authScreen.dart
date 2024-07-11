@@ -65,7 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   filled: true,
                                   counter: Container(),
                                   label: const TextWidget(
-                                      text: "Username",
+                                      text: "Email",
                                       color: c4,
                                       textSize: 16),
                                   focusedBorder: OutlineInputBorder(
@@ -464,18 +464,18 @@ class _AuthScreenState extends State<AuthScreen> {
             );
           },
         );
-        final r =jsonDecode (await register(usarName.text, password.text, email.text));
-        
+        final r = jsonDecode(
+            await register(usarName.text, password.text, email.text));
+
         if (r["success"] == true) {
-          
           // ignore: use_build_context_synchronously
           Provider.of<MainProvider>(context, listen: false).IsLogged(true);
-           // ignore: use_build_context_synchronously
-           Navigator.of(context).pop();
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
         } else {
           // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
-          
+
           final msg = r["message"] ?? "";
           // ignore: use_build_context_synchronously
           showDialog(

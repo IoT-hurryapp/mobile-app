@@ -1,0 +1,56 @@
+[
+    {
+        "label": "paho.mqtt.client",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "paho.mqtt.client",
+        "description": "paho.mqtt.client",
+        "detail": "paho.mqtt.client",
+        "documentation": {}
+    },
+    {
+        "label": "on_connect",
+        "kind": 2,
+        "importPath": "lib.import paho.mqtt",
+        "description": "lib.import paho.mqtt",
+        "peekOfCode": "def on_connect(client, userdata, flags, rc):\n    if rc == 0:\n        print(\"Connected successfully\")\n    else:\n        print(f\"Failed to connect, return code {rc}\")\nbroker = \"206.81.29.27\"  # Replace with your MQTT broker address\nport = 1883  # Replace with your MQTT broker port\nclient = mqtt.Client()\nclient.on_connect = on_connect\ntry:",
+        "detail": "lib.import paho.mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "broker",
+        "kind": 5,
+        "importPath": "lib.import paho.mqtt",
+        "description": "lib.import paho.mqtt",
+        "peekOfCode": "broker = \"206.81.29.27\"  # Replace with your MQTT broker address\nport = 1883  # Replace with your MQTT broker port\nclient = mqtt.Client()\nclient.on_connect = on_connect\ntry:\n    client.connect(broker, port, 60)\n    client.loop_start()\nexcept Exception as e:\n    print(f\"Failed to connect to the broker: {e}\")",
+        "detail": "lib.import paho.mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "port",
+        "kind": 5,
+        "importPath": "lib.import paho.mqtt",
+        "description": "lib.import paho.mqtt",
+        "peekOfCode": "port = 1883  # Replace with your MQTT broker port\nclient = mqtt.Client()\nclient.on_connect = on_connect\ntry:\n    client.connect(broker, port, 60)\n    client.loop_start()\nexcept Exception as e:\n    print(f\"Failed to connect to the broker: {e}\")",
+        "detail": "lib.import paho.mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "lib.import paho.mqtt",
+        "description": "lib.import paho.mqtt",
+        "peekOfCode": "client = mqtt.Client()\nclient.on_connect = on_connect\ntry:\n    client.connect(broker, port, 60)\n    client.loop_start()\nexcept Exception as e:\n    print(f\"Failed to connect to the broker: {e}\")",
+        "detail": "lib.import paho.mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "client.on_connect",
+        "kind": 5,
+        "importPath": "lib.import paho.mqtt",
+        "description": "lib.import paho.mqtt",
+        "peekOfCode": "client.on_connect = on_connect\ntry:\n    client.connect(broker, port, 60)\n    client.loop_start()\nexcept Exception as e:\n    print(f\"Failed to connect to the broker: {e}\")",
+        "detail": "lib.import paho.mqtt",
+        "documentation": {}
+    }
+]
